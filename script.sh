@@ -91,7 +91,7 @@ fi
 # Handle preset choice
 if [ "$PRESET" = "1" ]; then
     # Select All - run everything without showing checklist
-    SELECTIONS='"1" "2" "3" "4" "5" "6" "7"'
+    SELECTIONS='"1" "2" "3" "4" "5" "6" "7" "8"'
 else
     # Set defaults based on preset choice
     case $PRESET in
@@ -105,7 +105,7 @@ else
 
     # Create checklist menu with selected defaults
     SELECTIONS=$(whiptail --title "Configuration Options" --checklist \
-    "Use ↑↓ arrows to navigate, SPACE to select/deselect, TAB to switch to buttons:" 20 78 7 \
+    "Use ↑↓ arrows to navigate, SPACE to select/deselect, TAB to switch to buttons:" 22 78 8 \
     "1" "Keyboard settings" $DEFAULT_STATE \
     "2" "Workspace keybindings" $DEFAULT_STATE \
     "3" "Application launcher keybindings" $DEFAULT_STATE \
@@ -113,6 +113,7 @@ else
     "5" "GitHub SSH authentication" $DEFAULT_STATE \
     "6" "Claude Code installation" $DEFAULT_STATE \
     "7" "Wallpaper setup" $DEFAULT_STATE \
+    "8" "ngrok installation" $DEFAULT_STATE \
     3>&1 1>&2 2>&3)
 
     # Check if user cancelled
@@ -130,6 +131,7 @@ RUN_STARSHIP=false
 RUN_GITHUB=false
 RUN_CLAUDE=false
 RUN_WALLPAPER=false
+RUN_NGROK=false
 
 for selection in $SELECTIONS; do
     # Remove quotes
@@ -142,6 +144,7 @@ for selection in $SELECTIONS; do
         5) RUN_GITHUB=true ;;
         6) RUN_CLAUDE=true ;;
         7) RUN_WALLPAPER=true ;;
+        8) RUN_NGROK=true ;;
     esac
 done
 
@@ -212,7 +215,7 @@ if [ "$RUN_LAUNCHERS" = true ]; then
     echo -e "${YELLOW}Configuring application launcher keybindings...${NC}"
 
     # Setup custom keybindings array
-    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']"
 
     # Super + Enter = Alacritty
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Launch Alacritty"
@@ -234,8 +237,38 @@ if [ "$RUN_LAUNCHERS" = true ]; then
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ command "code"
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding "<Super>c"
 
+    # Super + Shift + F = Files (Nautilus)
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/ name "Launch Files"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/ command "nautilus"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/ binding "<Super><Shift>f"
+
     # Super + F = Fullscreen
     gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>f']"
+
+    # Configure Ulauncher hotkey (Ctrl + Space)
+    if command -v ulauncher &> /dev/null; then
+        mkdir -p ~/.config/ulauncher
+        ULAUNCHER_SETTINGS="$HOME/.config/ulauncher/settings.json"
+
+        if [ -f "$ULAUNCHER_SETTINGS" ]; then
+            # Update existing settings
+            sed -i 's/"hotkey-show-app": *"[^"]*"/"hotkey-show-app": "<Primary>space"/' "$ULAUNCHER_SETTINGS"
+        else
+            # Create new settings file with hotkey
+            cat > "$ULAUNCHER_SETTINGS" <<'UEOF'
+{
+    "hotkey-show-app": "<Primary>space",
+    "show-indicator-icon": true,
+    "show-recent-apps": "0",
+    "theme-name": "dark"
+}
+UEOF
+        fi
+
+        # Restart ulauncher to apply settings
+        pkill -f ulauncher
+        nohup ulauncher --hide-window > /dev/null 2>&1 &
+    fi
 
     echo -e "${GREEN}✓ Application launcher keybindings configured${NC}"
     echo ""
@@ -323,7 +356,44 @@ if [ "$RUN_CLAUDE" = true ]; then
 fi
 
 # ============================================
-# 7. WALLPAPER SETUP
+# 7. NGROK INSTALLATION
+# ============================================
+if [ "$RUN_NGROK" = true ]; then
+    echo -e "${YELLOW}Installing ngrok...${NC}"
+
+    # Add ngrok repository and install
+    curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
+      | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null \
+      && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main" \
+      | sudo tee /etc/apt/sources.list.d/ngrok.list \
+      && sudo apt update \
+      && sudo apt install -y ngrok
+
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ ngrok installed successfully${NC}"
+        echo ""
+
+        # Ask for auth token
+        echo -e "${BLUE}Please enter your ngrok auth token:${NC}"
+        echo -e "${YELLOW}(You can get this from https://dashboard.ngrok.com/get-started/your-authtoken)${NC}"
+        read -p "Auth token: " NGROK_TOKEN
+
+        if [ -n "$NGROK_TOKEN" ]; then
+            ngrok config add-authtoken "$NGROK_TOKEN"
+            echo -e "${GREEN}✓ ngrok authenticated successfully${NC}"
+        else
+            echo -e "${YELLOW}⚠ Skipping authentication (no token provided)${NC}"
+            echo -e "${YELLOW}You can authenticate later with: ngrok config add-authtoken <YOUR_TOKEN>${NC}"
+        fi
+    else
+        echo -e "${RED}✗ Failed to install ngrok${NC}"
+    fi
+
+    echo ""
+fi
+
+# ============================================
+# 8. WALLPAPER SETUP
 # ============================================
 if [ "$RUN_WALLPAPER" = true ]; then
     echo -e "${YELLOW}Setting up Catppuccin wallpapers...${NC}"
@@ -376,11 +446,18 @@ EOF
     (crontab -l 2>/dev/null; echo "0 * * * * $HOME/.local/bin/cycle-wallpaper.sh") | crontab -
 
     # Add keybinding for manual wallpaper cycling (Super + Alt + Space)
-    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']"
+    # Check if launcher keybindings were also configured
+    if [ "$RUN_LAUNCHERS" = true ]; then
+        # Include all launcher keybindings + wallpaper keybinding
+        gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/']"
+    else
+        # Only include wallpaper keybinding
+        gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/']"
+    fi
 
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/ name "Cycle Wallpaper"
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/ command "$HOME/.local/bin/cycle-wallpaper.sh"
-    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/ binding "<Super><Alt>space"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/ name "Cycle Wallpaper"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/ command "$HOME/.local/bin/cycle-wallpaper.sh"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/ binding "<Super><Alt>space"
 
     echo -e "${GREEN}✓ Catppuccin wallpapers configured with hourly cycling and Super+Alt+Space hotkey${NC}"
     echo ""
