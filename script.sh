@@ -356,44 +356,7 @@ if [ "$RUN_CLAUDE" = true ]; then
 fi
 
 # ============================================
-# 7. NGROK INSTALLATION
-# ============================================
-if [ "$RUN_NGROK" = true ]; then
-    echo -e "${YELLOW}Installing ngrok...${NC}"
-
-    # Add ngrok repository and install
-    curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
-      | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null \
-      && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main" \
-      | sudo tee /etc/apt/sources.list.d/ngrok.list \
-      && sudo apt update \
-      && sudo apt install -y ngrok
-
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓ ngrok installed successfully${NC}"
-        echo ""
-
-        # Ask for auth token
-        echo -e "${BLUE}Please enter your ngrok auth token:${NC}"
-        echo -e "${YELLOW}(You can get this from https://dashboard.ngrok.com/get-started/your-authtoken)${NC}"
-        read -p "Auth token: " NGROK_TOKEN
-
-        if [ -n "$NGROK_TOKEN" ]; then
-            ngrok config add-authtoken "$NGROK_TOKEN"
-            echo -e "${GREEN}✓ ngrok authenticated successfully${NC}"
-        else
-            echo -e "${YELLOW}⚠ Skipping authentication (no token provided)${NC}"
-            echo -e "${YELLOW}You can authenticate later with: ngrok config add-authtoken <YOUR_TOKEN>${NC}"
-        fi
-    else
-        echo -e "${RED}✗ Failed to install ngrok${NC}"
-    fi
-
-    echo ""
-fi
-
-# ============================================
-# 8. WALLPAPER SETUP
+# 7. WALLPAPER SETUP
 # ============================================
 if [ "$RUN_WALLPAPER" = true ]; then
     echo -e "${YELLOW}Setting up Catppuccin wallpapers...${NC}"
@@ -460,6 +423,43 @@ EOF
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/ binding "<Super><Alt>space"
 
     echo -e "${GREEN}✓ Catppuccin wallpapers configured with hourly cycling and Super+Alt+Space hotkey${NC}"
+    echo ""
+fi
+
+# ============================================
+# 8. NGROK INSTALLATION
+# ============================================
+if [ "$RUN_NGROK" = true ]; then
+    echo -e "${YELLOW}Installing ngrok...${NC}"
+
+    # Add ngrok repository and install
+    curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
+      | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null \
+      && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main" \
+      | sudo tee /etc/apt/sources.list.d/ngrok.list \
+      && sudo apt update \
+      && sudo apt install -y ngrok
+
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✓ ngrok installed successfully${NC}"
+        echo ""
+
+        # Ask for auth token
+        echo -e "${BLUE}Please enter your ngrok auth token:${NC}"
+        echo -e "${YELLOW}(You can get this from https://dashboard.ngrok.com/get-started/your-authtoken)${NC}"
+        read -p "Auth token: " NGROK_TOKEN
+
+        if [ -n "$NGROK_TOKEN" ]; then
+            ngrok config add-authtoken "$NGROK_TOKEN"
+            echo -e "${GREEN}✓ ngrok authenticated successfully${NC}"
+        else
+            echo -e "${YELLOW}⚠ Skipping authentication (no token provided)${NC}"
+            echo -e "${YELLOW}You can authenticate later with: ngrok config add-authtoken <YOUR_TOKEN>${NC}"
+        fi
+    else
+        echo -e "${RED}✗ Failed to install ngrok${NC}"
+    fi
+
     echo ""
 fi
 
