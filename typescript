@@ -1,0 +1,136 @@
+Script started on 2026-05-01 00:19:25+01:00 [TERM="xterm-256color" TTY="/dev/pts/7" COLUMNS="143" LINES="37"]
+[?2004h
+[38;2;243;139;168m[48;2;243;139;168;38;2;17;17;27m󰕈 ramyar[48;2;250;179;135;38;2;243;139;168m[38;2;17;17;27m …/mysetup [48;2;249;226;175;38;2;250;179;135m[38;2;17;17;27m  master !? [48;2;166;227;161;38;2;249;226;175m[48;2;116;199;236;38;2;166;227;161m[48;2;180;190;254;38;2;116;199;236m[38;2;17;17;27m  00:19 [0m[38;2;180;190;254m [0m
+
+[1;38;2;166;227;161m❯[0m sh script.sh 
+[?2004lscript.sh: 7: Bad substitution
+script.sh: 9: source: not found
+script.sh: 10: source: not found
+script.sh: 13: source: not found
+script.sh: 13: source: not found
+script.sh: 13: source: not found
+script.sh: 13: source: not found
+script.sh: 13: source: not found
+script.sh: 13: source: not found
+script.sh: 13: source: not found
+script.sh: 13: source: not found
+script.sh: 13: source: not found
+script.sh: 13: source: not found
+[H[2J[3Jscript.sh: 17: print_header: not found
+-e First, let's collect necessary information...
+
+-e Enter sudo password (will be cached for the session):
+[sudo] password for ramyar: 
+
+-e Information collected
+
+script.sh: 35: ensure_whiptail: not found
+script.sh: 36: configure_whiptail_theme: not found
+script.sh: 37: collect_step_selections: not found
+script.sh: 39: step_selected: not found
+[H[2J[3J-e Starting selected configurations...
+
+script.sh: 47: run_selected_steps: not found
+
+-e ============================================
+-e Configuration Complete!
+-e ============================================
+
+-e All selected settings have been applied successfully.
+-e Restarting terminal to apply changes...
+
+[?2004h
+[38;2;243;139;168m[48;2;243;139;168;38;2;17;17;27m󰕈 ramyar[48;2;250;179;135;38;2;243;139;168m[38;2;17;17;27m …/mysetup [48;2;249;226;175;38;2;250;179;135m[38;2;17;17;27m  master !? [48;2;166;227;161;38;2;249;226;175m[48;2;116;199;236;38;2;166;227;161m[48;2;180;190;254;38;2;116;199;236m[38;2;17;17;27m  00:19 [0m[38;2;180;190;254m [0m
+
+[1;38;2;166;227;161m❯[0m bsh[K[K[Kbash -n script.sh 
+[?2004l[?2004h
+[38;2;243;139;168m[48;2;243;139;168;38;2;17;17;27m󰕈 ramyar[48;2;250;179;135;38;2;243;139;168m[38;2;17;17;27m …/mysetup [48;2;249;226;175;38;2;250;179;135m[38;2;17;17;27m  master !? [48;2;166;227;161;38;2;249;226;175m[48;2;116;199;236;38;2;166;227;161m[48;2;180;190;254;38;2;116;199;236m[38;2;17;17;27m  00:19 [0m[38;2;180;190;254m [0m
+
+[1;38;2;166;227;161m❯[0m bash -n script.sh 
+[?2004l[?2004h
+[38;2;243;139;168m[48;2;243;139;168;38;2;17;17;27m󰕈 ramyar[48;2;250;179;135;38;2;243;139;168m[38;2;17;17;27m …/mysetup [48;2;249;226;175;38;2;250;179;135m[38;2;17;17;27m  master !? [48;2;166;227;161;38;2;249;226;175m[48;2;116;199;236;38;2;166;227;161m[48;2;180;190;254;38;2;116;199;236m[38;2;17;17;27m  00:23 [0m[38;2;180;190;254m [0m
+
+[1;38;2;166;227;161m❯[0m bash -n script.sh [C[1P[1P[1P
+[?2004l[H[2J[3J[0;34m============================================[0m
+[0;34m   Ubuntu/GNOME Configuration Script[0m
+[0;34m============================================[0m
+
+[1;33mFirst, let's collect necessary information...[0m
+
+[0;34mEnter sudo password (will be cached for the session):[0m
+
+[0;32mInformation collected[0m
+
+[?1049h[22;0;0t[1;37r[4l[?25l(B[m[37m[40m[1;37r[H[2J[1;1H[97m[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[1;1H[12;33H[32m┌────────────────────────────┤ Quick Selection ├─────────────────────────────┐[13;33H│ Choose a preset or customize your selection:                               │[14;33H│                                                                            │[15;33H│                      [30m[42m1 Select All (run everything)   [32m[40m                      │[16;33H│                      2 Deselect All (choose manually)                      │[17;33H│                      3 Custom (default: all selected)                      │[18;33H│                                                                            │[19;33H│                                                                            │[20;33H│                                                                            │[21;33H│                                                                            │[22;33H│                                                                            │[23;33H│                                                                            │[24;33H│                    <Ok>                        <Cancel>                    │[25;33H│                                                                            │[26;33H└────────────────────────────────────────────────────────────────────────────┘[15;56H1 Select All (run everything)   [16;56H[30m[42m2 Deselect All (choose manually)[16;56H[32m[40m2 Deselect All (choose manually)[17;56H[30m[42m3 Custom (default: all selected)[17;56H[24;54H<Ok>[24;55H[32m[40m<Ok>[24C[30m[42m<Cancel>[24;83H[24;54H<Ok>[24C[32m[40m<Cancel>[24;55H<Ok>[17;56H[?12l[?25h[37;1H[37m(B[m[39;49m[K[?1049l[23;0;0t[?1049h[22;0;0t[1;37r[4l[?25l(B[m[37m[40m[1;37r[H[2J[1;1H[97m[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[1;1H[8;33H[32m┌─────────────────────────┤ Configuration Options ├──────────────────────────┐[9;33H│ Use up/down arrows to navigate, SPACE to select/deselect, TAB to switch to │[10;33H│ buttons:                                                                   │[11;33H│                                                                            │[12;33H│  [[30m[42m*[32m[40m] 1   Essential CLI packages                                            │[13;33H│  [*] 2   Keyboard settings                                                 │[14;33H│  [*] 3   Workspace keybindings                                             │[15;33H│  [*] 4   Application launcher keybindings                                  │[16;33H│  [*] 5   GNOME appearance preferences                                      │[17;33H│  [*] 6   Starship prompt installation                                      │[18;33H│  [*] 7   GitHub SSH authentication                                         │[19;33H│  [*] 8   Claude Code installation                                          │[20;33H│  [*] 9   Wallpaper setup                                                   │[21;33H│  [*] 10  ngrok installation                                                │[22;33H│                                                                            │[23;33H│                                                                            │[24;33H│                                                                            │[25;33H│                                                                            │[26;33H│                                                                            │[27;33H│                    <Ok>                        <Cancel>                    │[28;33H│                                                                            │[29;33H└────────────────────────────────────────────────────────────────────�
