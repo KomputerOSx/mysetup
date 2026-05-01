@@ -3,6 +3,11 @@
 run_launchers() {
     step_start "Configuring application launcher keybindings"
 
+    if ! command_exists ulauncher; then
+        sudo apt-get update
+        sudo apt-get install -y ulauncher || step_warn "Could not install Ulauncher from apt"
+    fi
+
     gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']"
 
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Launch Alacritty with Zellij"
@@ -26,17 +31,20 @@ run_launchers() {
     gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/ binding "<Super>e"
 
     gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>f']"
+    gsettings set org.gnome.desktop.wm.keybindings close "['<Super>w', '<Alt>F4']"
+    gsettings set org.gnome.desktop.wm.keybindings switch-input-source "[]"
+    gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "[]"
 
     if command -v ulauncher &> /dev/null; then
         mkdir -p ~/.config/ulauncher
         ULAUNCHER_SETTINGS="$HOME/.config/ulauncher/settings.json"
 
         if [ -f "$ULAUNCHER_SETTINGS" ]; then
-            sed -i 's/"hotkey-show-app": *"[^"]*"/"hotkey-show-app": "<Primary>space"/' "$ULAUNCHER_SETTINGS"
+            sed -i 's/"hotkey-show-app": *"[^"]*"/"hotkey-show-app": "<Super>space"/' "$ULAUNCHER_SETTINGS"
         else
             cat > "$ULAUNCHER_SETTINGS" <<'EOF'
 {
-    "hotkey-show-app": "<Primary>space",
+    "hotkey-show-app": "<Super>space",
     "show-indicator-icon": true,
     "show-recent-apps": "0",
     "theme-name": "dark"
