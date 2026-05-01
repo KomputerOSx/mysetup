@@ -74,16 +74,26 @@ run_terminal() {
     step_start "Installing Alacritty and Zellij"
 
     sudo apt-get update
-    sudo apt-get install -y alacritty
-
-    if ! command -v zellij &> /dev/null; then
-        sudo apt-get install -y zellij || install_zellij_from_github
+    if ! command_exists alacritty; then
+        sudo apt-get install -y alacritty
+    else
+        step_warn "Alacritty already installed"
     fi
+
+    if ! command_exists zellij; then
+        sudo apt-get install -y zellij || install_zellij_from_github
+    else
+        step_warn "Zellij already installed"
+    fi
+
+    backup_path ~/.config/alacritty
+    backup_path ~/.config/zellij
 
     mkdir -p ~/.config/alacritty ~/.config/zellij
     cp -R "$SCRIPT_DIR/config/alacritty/." ~/.config/alacritty/
     cp -R "$SCRIPT_DIR/config/zellij/." ~/.config/zellij/
     choose_terminal_theme
+    add_restart_notice "Open a new terminal window for Alacritty/Zellij config changes."
 
     step_done "Alacritty, Zellij, and terminal configs installed"
 }

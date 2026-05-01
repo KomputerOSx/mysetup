@@ -43,7 +43,9 @@ EOF
     chmod +x ~/.local/bin/cycle-wallpaper.sh
     ~/.local/bin/cycle-wallpaper.sh
 
-    (crontab -l 2>/dev/null; echo "0 * * * * $HOME/.local/bin/cycle-wallpaper.sh") | crontab -
+    if ! crontab -l 2>/dev/null | grep -q "$HOME/.local/bin/cycle-wallpaper.sh"; then
+        (crontab -l 2>/dev/null; echo "0 * * * * $HOME/.local/bin/cycle-wallpaper.sh") | crontab -
+    fi
 
     if step_selected "launchers"; then
         gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/']"

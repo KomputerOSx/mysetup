@@ -14,7 +14,14 @@ print_header() {
 }
 
 ensure_whiptail() {
+    local dry_run="${1:-false}"
+
     if ! command -v whiptail &> /dev/null; then
+        if [ "$dry_run" = true ]; then
+            step_error "whiptail is required for dry-run selection but is not installed."
+            exit 1
+        fi
+
         echo -e "${YELLOW}Installing whiptail for interactive menu...${NC}"
         sudo apt-get update && sudo apt-get install -y whiptail
     fi

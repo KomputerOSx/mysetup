@@ -3,13 +3,19 @@
 run_starship() {
     step_start "Installing and configuring Starship prompt"
 
-    curl -sS https://starship.rs/install.sh | sh
+    if ! command_exists starship; then
+        curl -sS https://starship.rs/install.sh | sh
+    else
+        step_warn "Starship already installed"
+    fi
 
     if ! grep -q "starship init bash" ~/.bashrc; then
         echo 'eval "$(starship init bash)"' >> ~/.bashrc
     fi
 
+    backup_path ~/.config/starship.toml
     starship preset catppuccin-powerline -o ~/.config/starship.toml
+    add_restart_notice "Open a new shell for Starship prompt changes."
 
     step_done "Starship prompt configured"
 

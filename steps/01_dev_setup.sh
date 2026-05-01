@@ -3,6 +3,11 @@
 install_google_chrome() {
     local deb_path="/tmp/google-chrome-stable_current_amd64.deb"
 
+    if command_exists google-chrome; then
+        step_warn "Google Chrome already installed"
+        return
+    fi
+
     if [ "$(dpkg --print-architecture)" != "amd64" ]; then
         step_warn "Skipping Google Chrome: official Linux Chrome package is amd64 only"
         return
@@ -16,6 +21,11 @@ install_google_chrome() {
 }
 
 install_vscode() {
+    if command_exists code; then
+        step_warn "Visual Studio Code already installed"
+        return
+    fi
+
     step_start "Installing Visual Studio Code"
 
     sudo apt-get install -y wget gpg apt-transport-https
@@ -44,15 +54,20 @@ install_mise_and_languages() {
 
     step_start "Installing mise"
 
-    curl https://mise.run | sh
+    if [ ! -x "$mise_bin" ]; then
+        curl https://mise.run | sh
+    else
+        step_warn "mise already installed"
+    fi
 
-    if ! grep -q 'mise activate bash' ~/.bashrc; then
+    if [ -f ~/.bashrc ] && ! grep -q 'mise activate bash' ~/.bashrc; then
         echo 'eval "$($HOME/.local/bin/mise activate bash)"' >> ~/.bashrc
     fi
 
     if [ -f ~/.zshrc ] && ! grep -q 'mise activate zsh' ~/.zshrc; then
         echo 'eval "$($HOME/.local/bin/mise activate zsh)"' >> ~/.zshrc
     fi
+    add_restart_notice "Open a new shell for mise PATH changes."
 
     echo ""
     read -p "Ruby version for mise (press Enter for latest): " ruby_version
@@ -68,6 +83,13 @@ install_mise_and_languages() {
 }
 
 install_docker() {
+    if command_exists docker && docker compose version &> /dev/null; then
+        step_warn "Docker and Docker Compose already installed"
+        sudo usermod -aG docker "$USER"
+        add_logout_notice "Docker group membership may require logging out and back in."
+        return
+    fi
+
     step_start "Installing Docker and Docker Compose"
 
     sudo apt-get remove -y docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc 2>/dev/null || true
@@ -89,6 +111,7 @@ EOF
     sudo apt-get update
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     sudo usermod -aG docker "$USER"
+    add_logout_notice "Docker group membership requires logging out and back in."
 }
 
 install_github_release_binary() {
@@ -127,6 +150,11 @@ install_github_release_binary() {
 }
 
 install_lazydocker() {
+    if command_exists lazydocker; then
+        step_warn "lazydocker already installed"
+        return
+    fi
+
     step_start "Installing lazydocker"
 
     install_github_release_binary \
@@ -137,6 +165,11 @@ install_lazydocker() {
 }
 
 install_lazygit() {
+    if command_exists lazygit; then
+        step_warn "lazygit already installed"
+        return
+    fi
+
     step_start "Installing lazygit"
 
     if sudo apt-get install -y lazygit; then
@@ -154,21 +187,25 @@ install_ngrok_dev() {
     local arch
     local tmp_dir
 
-    step_start "Installing ngrok"
+    if command_exists ngrok; then
+        step_warn "ngrok already installed"
+    else
+        step_start "Installing ngrok"
 
-    case "$(uname -m)" in
-        x86_64) arch="amd64" ;;
-        aarch64|arm64) arch="arm64" ;;
-        *)
-            step_error "Unsupported architecture for ngrok: $(uname -m)"
-            return 1
-            ;;
-    esac
+        case "$(uname -m)" in
+            x86_64) arch="amd64" ;;
+            aarch64|arm64) arch="arm64" ;;
+            *)
+                step_error "Unsupported architecture for ngrok: $(uname -m)"
+                return 1
+                ;;
+        esac
 
-    tmp_dir="$(mktemp -d)"
-    curl -fL "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-${arch}.tgz" -o "$tmp_dir/ngrok.tgz"
-    sudo tar xzf "$tmp_dir/ngrok.tgz" -C /usr/local/bin
-    rm -rf "$tmp_dir"
+        tmp_dir="$(mktemp -d)"
+        curl -fL "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-${arch}.tgz" -o "$tmp_dir/ngrok.tgz"
+        sudo tar xzf "$tmp_dir/ngrok.tgz" -C /usr/local/bin
+        rm -rf "$tmp_dir"
+    fi
 
     echo -e "${BLUE}Please enter your ngrok auth token:${NC}"
     echo -e "${YELLOW}(Press Enter to skip. You can get this from https://dashboard.ngrok.com/get-started/your-authtoken)${NC}"
@@ -216,7 +253,7 @@ run_dev_setup() {
     install_lazygit
     install_ngrok_dev
 
-    step_done "Development tools installed. Log out and back in for Docker group access."
+    step_done "Development tools installed"
 }
 
 register_step "dev_setup" "Development tools setup" "run_dev_setup"

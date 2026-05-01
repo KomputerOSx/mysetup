@@ -21,3 +21,5 @@ register_step "docker" "Docker installation" "run_docker"
 ```
 
 Files are sourced in filename order, so the numeric prefix controls menu order and execution order.
+
+Run `./script.sh --dry-run` to choose steps and preview the run without making changes.

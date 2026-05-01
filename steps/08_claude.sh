@@ -3,7 +3,11 @@
 run_claude() {
     step_start "Installing Claude Code"
 
-    curl -fsSL https://claude.ai/install.sh | bash
+    if command_exists claude; then
+        step_warn "Claude Code already installed"
+    else
+        curl -fsSL https://claude.ai/install.sh | bash
+    fi
 
     step_done "Claude Code installed"
 }
