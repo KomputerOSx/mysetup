@@ -479,4 +479,78 @@ The following NEW packages will be installed:
 Need to get 5,203 kB of archives.
 After this operation, 19.7 MB of additional disk space will be used.
 0% [Working]            Get:1 http://gb.archive.ubuntu.com/ubuntu noble/main amd64 htop amd64 3.3.0-4build1 [171 kB]
-0% [1 htop 14.0 kB/171 kB 8%]                             8% [Working
+0% [1 htop 14.0 kB/171 kB 8%]                             8% [Working]            Get:2 http://gb.archive.ubuntu.com/ubuntu noble-updates/universe amd64 tree amd64 2.1.1-2ubuntu3.24.04.2 [47.4 kB]
+8% [2 tree 15.4 kB/47.4 kB 33%]                               13% [Waiting for headers]                         Get:3 http://gb.archive.ubuntu.com/ubuntu noble/main amd64 zsh-common all 5.9-6ubuntu2 [4,173 kB]
+13% [3 zsh-common 6,320 B/4,173 kB 0%]                                      83% [Waiting for headers]                         Get:4 http://gb.archive.ubuntu.com/ubuntu noble/main amd64 zsh amd64 5.9-6ubuntu2 [812 kB]
+83% [4 zsh 8,570 B/812 kB 1%]                             100% [Working]              Fetched 5,203 kB in 0s (16.4 MB/s)
+Selecting previously unselected package htop.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 209501 files and directories currently installed.)
+Preparing to unpack .../htop_3.3.0-4build1_amd64.deb ...
+Unpacking htop (3.3.0-4build1) ...
+Selecting previously unselected package tree.
+Preparing to unpack .../tree_2.1.1-2ubuntu3.24.04.2_amd64.deb ...
+Unpacking tree (2.1.1-2ubuntu3.24.04.2) ...
+Selecting previously unselected package zsh-common.
+Preparing to unpack .../zsh-common_5.9-6ubuntu2_all.deb ...
+Unpacking zsh-common (5.9-6ubuntu2) ...
+Selecting previously unselected package zsh.
+Preparing to unpack .../zsh_5.9-6ubuntu2_amd64.deb ...
+Unpacking zsh (5.9-6ubuntu2) ...
+Setting up zsh-common (5.9-6ubuntu2) ...
+Setting up htop (3.3.0-4build1) ...
+Setting up tree (2.1.1-2ubuntu3.24.04.2) ...
+Setting up zsh (5.9-6ubuntu2) ...
+Processing triggers for hicolor-icon-theme (0.17-2) ...
+Processing triggers for gnome-menus (3.36.0-1.1ubuntu3) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Processing triggers for debianutils (5.17build1) ...
+Processing triggers for desktop-file-utils (0.27-2build1) ...
+[0;32mEssential CLI packages installed[0m
+
+
+[0;32m============================================[0m
+[0;32mConfiguration Complete![0m
+[0;32m============================================[0m
+
+[0;34mStep summary:[0m
+  [0;32mOK[0m Essential CLI packages
+
+[0;34mSelected settings have finished running.[0m
+
+[?2004h
+[38;2;243;139;168m[48;2;243;139;168;38;2;17;17;27m󰕈 ramyar[48;2;250;179;135;38;2;243;139;168m[38;2;17;17;27m …/mysetup [48;2;249;226;175;38;2;250;179;135m[38;2;17;17;27m  master !? [48;2;166;227;161;38;2;249;226;175m[48;2;116;199;236;38;2;166;227;161m[48;2;180;190;254;38;2;116;199;236m[38;2;17;17;27m  00:58 [0m[38;2;180;190;254m [0m in 49s925ms 
+
+[1;38;2;166;227;161m❯[0m a[Ksh script.sh [C[C[10@git push origin master[C[C[C[C[C[C[Ccommit -m "more clean up"[C[C[C[C[C[Cadd .[K
+[?2004l[?2004h
+[38;2;243;139;168m[48;2;243;139;168;38;2;17;17;27m󰕈 ramyar[48;2;250;179;135;38;2;243;139;168m[38;2;17;17;27m …/mysetup [48;2;249;226;175;38;2;250;179;135m[38;2;17;17;27m  master + [48;2;166;227;161;38;2;249;226;175m[48;2;116;199;236;38;2;166;227;161m[48;2;180;190;254;38;2;116;199;236m[38;2;17;17;27m  01:00 [0m[38;2;180;190;254m [0m
+
+[1;38;2;166;227;161m❯[0m git add .[C[Csh script.sh [C[C[10@git push origin master[C[C[C[C[C[C[Ccommit -m "more clean up"
+[?2004l[master 92da3e2] more clean up
+ 13 files changed, 506 insertions(+), 37 deletions(-)
+ create mode 100644 lib/system.sh
+ create mode 100644 steps/02_fonts.sh
+ create mode 100644 steps/02_shell.sh
+[?2004h
+[38;2;243;139;168m[48;2;243;139;168;38;2;17;17;27m󰕈 ramyar[48;2;250;179;135;38;2;243;139;168m[38;2;17;17;27m …/mysetup [48;2;249;226;175;38;2;250;179;135m[38;2;17;17;27m  master [48;2;166;227;161;38;2;249;226;175m[48;2;116;199;236;38;2;166;227;161m[48;2;180;190;254;38;2;116;199;236m[38;2;17;17;27m  01:00 [0m[38;2;180;190;254m [0m
+
+[1;38;2;166;227;161m❯[0m git commit -m "more clean up"[C[C[C[C[C[Cadd .[K[C[Csh script.sh [C[C[10@git push origin master[C[C[C[C[C[C[Ccommit -m "more clean up"[C[C[C[C[C[C[6Ppush origin master 
+[?2004lEnumerating objects: 30, done.
+Counting objects:   3% (1/30)Counting objects:   6% (2/30)Counting objects:  10% (3/30)Counting objects:  13% (4/30)Counting objects:  16% (5/30)Counting objects:  20% (6/30)Counting objects:  23% (7/30)Counting objects:  26% (8/30)Counting objects:  30% (9/30)Counting objects:  33% (10/30)Counting objects:  36% (11/30)Counting objects:  40% (12/30)Counting objects:  43% (13/30)Counting objects:  46% (14/30)Counting objects:  50% (15/30)Counting objects:  53% (16/30)Counting objects:  56% (17/30)Counting objects:  60% (18/30)Counting objects:  63% (19/30)Counting objects:  66% (20/30)Counting objects:  70% (21/30)Counting objects:  73% (22/30)Counting objects:  76% (23/30)Counting objects:  80% (24/30)Counting objects:  83% (25/30)Counting objects:  86% (26/30)Counting objects:  90% (27/30)Counting objects:  93% (28/30)Counting objects:  96% (29/30)Counting objects: 100% (30/30)Counting objects: 100% (30/30), done.
+Delta compression using up to 8 threads
+Compressing objects:   5% (1/17)Compressing objects:  11% (2/17)Compressing objects:  17% (3/17)Compressing objects:  23% (4/17)Compressing objects:  29% (5/17)Compressing objects:  35% (6/17)Compressing objects:  41% (7/17)Compressing objects:  47% (8/17)Compressing objects:  52% (9/17)Compressing objects:  58% (10/17)Compressing objects:  64% (11/17)Compressing objects:  70% (12/17)Compressing objects:  76% (13/17)Compressing objects:  82% (14/17)Compressing objects:  88% (15/17)Compressing objects:  94% (16/17)Compressing objects: 100% (17/17)Compressing objects: 100% (17/17), done.
+Writing objects:   5% (1/17)Writing objects:  11% (2/17)Writing objects:  17% (3/17)Writing objects:  23% (4/17)Writing objects:  29% (5/17)Writing objects:  35% (6/17)Writing objects:  41% (7/17)Writing objects:  47% (8/17)Writing objects:  52% (9/17)Writing objects:  58% (10/17)Writing objects:  64% (11/17)Writing objects:  70% (12/17)Writing objects:  76% (13/17)Writing objects:  82% (14/17)Writing objects:  88% (15/17)Writing objects:  94% (16/17)Writing objects: 100% (17/17)Writing objects: 100% (17/17), 10.00 KiB | 3.33 MiB/s, done.
+Total 17 (delta 10), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas:   0% (0/10)[Kremote: Resolving deltas:  10% (1/10)[Kremote: Resolving deltas:  20% (2/10)[Kremote: Resolving deltas:  30% (3/10)[Kremote: Resolving deltas:  40% (4/10)[Kremote: Resolving deltas:  50% (5/10)[Kremote: Resolving deltas:  60% (6/10)[Kremote: Resolving deltas:  70% (7/10)[Kremote: Resolving deltas:  80% (8/10)[Kremote: Resolving deltas:  90% (9/10)[Kremote: Resolving deltas: 100% (10/10)[Kremote: Resolving deltas: 100% (10/10), completed with 10 local objects.[K
+To github.com:KomputerOSx/mysetup.git
+   019a171..92da3e2  master -> master
+[?2004h
+[38;2;243;139;168m[48;2;243;139;168;38;2;17;17;27m󰕈 ramyar[48;2;250;179;135;38;2;243;139;168m[38;2;17;17;27m …/mysetup [48;2;249;226;175;38;2;250;179;135m[38;2;17;17;27m  master ! [48;2;166;227;161;38;2;249;226;175m[48;2;116;199;236;38;2;166;227;161m[48;2;180;190;254;38;2;116;199;236m[38;2;17;17;27m  01:00 [0m[38;2;180;190;254m [0m
+
+[1;38;2;166;227;161m❯[0m git status
+[?2004lOn branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	[31mmodified:   typescript[m
+
+no changes added to commit (use "git 
