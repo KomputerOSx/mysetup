@@ -2,34 +2,40 @@
 
 install_zellij_from_github() {
     local arch
-    local target
+    local os
+    local filename
     local tmp_dir
-    local download_url
+    local url
 
     arch="$(uname -m)"
-    case "$arch" in
-        x86_64) target="x86_64-unknown-linux-musl" ;;
-        aarch64|arm64) target="aarch64-unknown-linux-musl" ;;
+    os="$(uname -s)"
+    case "$os" in
+        Darwin)
+            filename="zellij-${arch}-apple-darwin.tar.gz"
+            ;;
+        Linux)
+            filename="zellij-${arch}-unknown-linux-musl.tar.gz"
+            ;;
         *)
-            step_error "Unsupported architecture for Zellij release install: $arch"
+            step_error "Unsupported OS for Zellij release install: $os"
             return 1
             ;;
     esac
 
     tmp_dir="$(mktemp -d)"
-    download_url="$(curl -fsSL https://api.github.com/repos/zellij-org/zellij/releases/latest \
-        | sed -n "s/.*\"browser_download_url\": \"\\(.*zellij-${target}\\.tar\\.gz\\)\".*/\\1/p" \
-        | head -n 1)"
+    url="https://github.com/zellij-org/zellij/releases/latest/download/$filename"
 
-    if [ -z "$download_url" ]; then
-        step_error "Could not find a Zellij release for $target"
+    curl -fL "$url" -o "$tmp_dir/$filename"
+    tar -xf "$tmp_dir/$filename" -C "$tmp_dir"
+    sudo install -m 755 "$tmp_dir/zellij" /bin/zellij
+    rm -rf "$tmp_dir"
+
+    if [ -f "/bin/zellij" ]; then
+        step_done "Zellij binary installed successfully"
+    else
+        step_error "Zellij binary not installed successfully"
         return 1
     fi
-
-    curl -fL "$download_url" -o "$tmp_dir/zellij.tar.gz"
-    tar -xzf "$tmp_dir/zellij.tar.gz" -C "$tmp_dir"
-    sudo install -m 755 "$tmp_dir/zellij" /usr/local/bin/zellij
-    rm -rf "$tmp_dir"
 }
 
 apply_terminal_theme() {
