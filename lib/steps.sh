@@ -110,6 +110,8 @@ run_selected_steps() {
 
     for ((index = 0; index < ${#STEP_IDS[@]}; index++)); do
         if step_selected "${STEP_IDS[$index]}"; then
+            step_start "Running ${STEP_LABELS[$index]}"
+
             if "${STEP_FUNCTIONS[$index]}"; then
                 status="OK"
             else
